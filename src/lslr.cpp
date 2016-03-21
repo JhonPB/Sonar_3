@@ -17,7 +17,45 @@ geometry_msgs::Twist td()
 {
     geometry_msgs::Twist retorno;
     
-    
+    if (right > 0.1 && left == 0 && front == 0){
+        retorno.linear.x = 0;
+        retorno.angular.z = 0.5;
+    }
+    else if(left > 0.1 && right == 0 && front == 0)
+    {
+        retorno.linear.x = 0;
+        retorno.angular.z = -0.5;
+    }
+    else if (right == 0 && left == 0 && front > 0.1)
+    {
+        retorno.linear.x = -0.5;
+        retorno.angular.z = 0.5;
+    }
+    else if(right > 0.1 && left >0.1 && front > 0.1)
+    {
+        retorno.linear.x = -0.5;
+        retorno.angular.z = 0.5;
+    }
+    else if(right > 0.1 && left > 0.1 && front == 0)
+    {
+        retorno.linear.x = -0.5;
+        retorno.angular.z = -0.5;
+    }
+    else if(right > 0.1 && front > 0.1 && left == 0)
+    {
+        retorno.linear.x = 0;
+        retorno.angular.z = 0.5;
+    }
+    else if (front > 0.1 && left > 0.1 && right == 0)
+    {
+        retorno.linear.x = 0;
+        retorno.angular.z = -0.5;
+    }
+    else
+    {
+        retorno.linear.x = 0.5;
+        retorno.angular.z = 0;
+    }
     
     
     
@@ -49,7 +87,7 @@ int main (int argc, char **argv)
     ros::NodeHandle nh;
     ros::Subscriber sub1 = nh.subscribe("/vrep/vehicle/rightSonar", 1, rightcallback);
     ros::Subscriber sub2 = nh.subscribe("/vrep/vehicle/leftSonar", 1, leftcallback);
-    ros::Subscriber sub3 = nh.subscribe("/vrep/vehicle/leftSonar", 1, frontcallback);
+    ros::Subscriber sub3 = nh.subscribe("/vrep/vehicle/frontSonar", 1, frontcallback);
     
     twist_pub = nh.advertise <geometry_msgs::Twist>("gogo", 1);
         ros::Rate loop_rate(50);
